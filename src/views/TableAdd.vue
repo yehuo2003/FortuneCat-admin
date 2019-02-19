@@ -1,6 +1,5 @@
 <template>
   <div class="about">
-    <h1>login</h1>
-    <h3>{{5 | tableStatus}}</h3>
+    <h1>TableAdd</h1>
   </div>
 </template>

@@ -40,9 +40,23 @@ Vue.filter('datetime', (val) => {
 
   return yy + '-' + mm + '-' + dd + ' ' + hh + ':' + mi + ':' + ss
 })
+// 价格过滤器
 Vue.filter('currency', (val) => {
   // 把int转换为￥xx.yy
   return '￥' + val.toFixed(2)
+})
+// 桌台状态过滤器
+Vue.filter('tableStatus', (val) => {
+  switch (val) {
+    case 1:
+      return '空闲'
+    case 2:
+      return '预定'
+    case 3:
+      return '占用'
+    default:
+      return '其它'
+  }
 })
 
 new Vue({
