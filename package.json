@@ -12,7 +12,8 @@
     "qrcode": "^1.3.3",
     "vue": "^2.5.21",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "zoom-ui-1.0": "^0.3.9"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.3.0",
