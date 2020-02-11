@@ -6,6 +6,11 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 
+import zoomUI from 'zoom-ui-1.0';
+Vue.use(zoomUI);
+
+import '../node_modules/zoom-ui-1.0/lib/zoom-ui-1.0.css'
+
 // 插件和全局对象的设置
 Vue.use(ElementUI) //注册ElementUI插件
 Vue.prototype.$axios = axios //把axios设置为所有Vue组件实例的成员属性，以后可以使用this.$axios使用异步请求功能

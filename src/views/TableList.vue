@@ -1,22 +1,28 @@
 <template>
   <div class="cat-table-list">
-    <el-breadcrumb>
-      <el-breadcrumb-item to="/main">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>桌台管理</el-breadcrumb-item>
-      <el-breadcrumb-item>桌台列表</el-breadcrumb-item>
-    </el-breadcrumb>
-    <el-row :gutter="10">
-      <el-col v-for="(t,i) of tableList" :key="i" :xs="12" :sm="8" :md="6" :lg="4" :xl="2">
+    <zoom-breadcrumb :op="breadcrumbOp"></zoom-breadcrumb>
+    <zoom-row>
+      <zoom-col v-for="(t,i) of tableList" :key="i" xs="12" sm="8" md="6" lg="3" xl="2">
         <cat-table :data="t"></cat-table>
-      </el-col>
-    </el-row>
+      </zoom-col>
+    </zoom-row>
   </div>
 </template>
 <script>
 import Table from "../components/Table";
 export default {
+  components: {
+    catTable: Table
+  },
   data() {
     return {
+      breadcrumbOp: {
+        data: [
+          {id: 1, url: '#/main', title: '首页'},
+          {id: 2, title: '桌台管理'},
+          {id: 3, title: '桌台列表'}
+        ]
+      },
       tableList: []
     };
   },
@@ -29,11 +35,8 @@ export default {
         this.tableList = data;
       })
       .catch(err => {
-        console.log(err);
+        console.warn(err);
       });
   },
-  components: {
-    "cat-table": Table
-  }
 };
 </script>

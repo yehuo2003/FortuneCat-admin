@@ -1,24 +1,24 @@
 <template>
   <div class="about">
-    <el-card class="cat-login-card">
-      <div slot="header">管理员登录</div>
-      <div>
-        <el-form label-width="100px">
-          <el-form-item label="管理员名：">
-            <el-input placeholder="请输入管理员名" v-model="formData.aname"></el-input>
-          </el-form-item>
-
-          <el-form-item label="登录密码：">
-            <el-input placeholder="请输入管理员密码" type="password" v-model="formData.apwd"></el-input>
-          </el-form-item>
-
-          <el-form-item>
-            <el-button type="primary" @click="doLogin">登录</el-button>
-            <el-button @click="doCancel">取消</el-button>
-          </el-form-item>
-        </el-form>
-      </div>
-    </el-card>
+    <zoom-card class="cat-login-card">
+      <zoom-header>
+        管理员登录
+      </zoom-header>
+      <zoom-container>
+        <zoom-form submit.prevent="false" label-width="100">
+          <zoom-form-item label="管理员名">
+            <zoom-input placeholder="请输入管理员名" v-model="formData.aname"></zoom-input>
+          </zoom-form-item>
+          <zoom-form-item label="登录密码">
+            <zoom-input :op="apwdOp" placeholder="请输入管理员密码" type="password" v-model="formData.apwd"></zoom-input>
+          </zoom-form-item>
+        </zoom-form>
+        <zoom-footer>
+          <zoom-button type="primary" @click="doLogin">登录</zoom-button>
+          <zoom-button @click="doCancel">取消</zoom-button>
+        </zoom-footer>
+      </zoom-container>
+    </zoom-card>
   </div>
 </template>
 
@@ -27,6 +27,10 @@ export default {
   data() {
     //普通组件的模型数据是函数返回值
     return {
+      apwdOp: {
+        type: 'password',
+        placeHolder: '请输入管理员密码'
+      },
       formData: {
         //表单中用户输入的两个数据
         aname: "boss",
@@ -36,6 +40,14 @@ export default {
   },
   methods: {
     doLogin() {
+      if (!this.formData.aname || !this.formData.apwd) {
+        this.$zoom.alert({
+          title: '警告',
+          content: '用户名或密码不能为空!',
+          type: 'warning'
+        })
+        return
+      }
       //执行登录
       var url =
         this.$store.state.globalSettings.apiUrl +
@@ -51,35 +63,42 @@ export default {
             this.$router.push("/main");
           } else {
             //登录失败
-            this.$alert("用户名或密码有误！", "登录失败", { type: "error" })
-              .then(() => {
-                this.formData.apwd = "";
-              })
-              .catch(() => {
-                this.formData.apwd = "";
-              });
+            this.$zoom.alert({
+              title: '登录失败',
+              content: '用户名或密码有误！',
+              type: 'error'
+            })
           }
         })
         .catch(err => {
-          console.log(err);
+          console.warn(err);
         });
     },
     doCancel() {
       //清除用户登录
-      (this.formData.aname = ""), (this.formData.apwd = "");
+      this.formData.aname = "";
+      this.formData.apwd = "";
     }
   }
 };
 </script>
 
 <style lang="scss">
-.cat-login-card {
-  width: 400px;
-  margin: 150px auto;
-
-  .el-card__header {
-    text-align: center;
-    font-size: 1.2em;
+.about {
+  .cat-login-card {
+    width: 400px;
+    margin: 150px auto;
+    .zoom-header {
+      text-align: center;
+      font-size: 1.2em;
+    }
+    .zoom-footer {
+      text-align: center;
+      font-size: 1.2em;
+      .zoom-btn {
+        margin: 0 10px;
+      }
+    }
   }
 }
 </style>

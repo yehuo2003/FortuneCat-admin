@@ -1,37 +1,56 @@
 <template>
   <div class="cat-table-info">
-    <el-card shadow="hover">
+    <!-- <el-card shadow="hover">
       <div
         class="cat-table"
         :style="{background:getTableColor(data.status)}"
       >{{data.tid}}号桌：{{data.status | tableStatus}}</div>
       <el-button type="success" plain size="mini" @click="showTableDetail">详情</el-button>
       <el-button type="danger" plain size="mini">修改</el-button>
-    </el-card>
+    </el-card> -->
+
+    <zoom-card>
+      <div
+        class="cat-table"
+        :style="{background:getTableColor(data.status)}"
+      >{{data.tid}}号桌：{{data.status | tableStatus}}</div>
+      <zoom-button type="success" plain size="mini" @click="showTableDetail">详情</zoom-button>
+      <zoom-button type="danger" plain size="mini">修改</zoom-button>
+    </zoom-card>
 
     <!-- 桌台详情对话框 -->
-    <el-dialog
+    <!-- <el-dialog
       :title="data.tid + '号桌台详情'"
       :visible="dialogTableDetailVisible"
       :before-close="closeDialogTableDetail"
-    >
+    > -->
+    <zoom-dialog-box :op="dialogOp" :show="dialogTableDetailVisible" @close="closeDialogTableDetail">
+      <h3>状态：{{data.status | tableStatus}}</h3>
+      <img :src="qrcodeData">
       <!-- 对话主体 -->
-      <el-tabs type="border-card" @tab-click="makeQRCode">
+      <!-- <el-tabs type="border-card" @tab-click="makeQRCode">
         <el-tab-pane label="桌台状态">桌台状态：{{data.status | tableStatus}}</el-tab-pane>
         <el-tab-pane label="桌台二维码">
           <img :src="qrcodeData">
         </el-tab-pane>
       </el-tabs>
-      <div slot="footer">
-        <el-button type="primary" @click="dialogTableDetailVisible=false">确定</el-button>
-      </div>
-    </el-dialog>
+      <div style="text-align: right; margin-top: 20px;">
+        <zoom-button type="primary" @click="dialogTableDetailVisible=false">确定</zoom-button>
+      </div> -->
+    </zoom-dialog-box>
+    <!-- </el-dialog> -->
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
+      dialogOp: {
+        showBtn: false,
+        onClick: function() {
+          console.log(666666);
+        }
+      },
       dialogTableDetailVisible: false,
       qrcodeData: "" //Base64编码字符串
     };
@@ -74,6 +93,7 @@ export default {
     showTableDetail() {
       // console.log(this.data);当前桌子的数据
       this.dialogTableDetailVisible = true;
+      this.makeQRCode();
     }
   }
 };
@@ -90,6 +110,9 @@ export default {
     border-radius: 50%;
     box-shadow: 3px 4px 5px #666;
     margin: 5px auto;
+  }
+  .zoom-btn {
+    margin: 5px;
   }
 }
 </style>
