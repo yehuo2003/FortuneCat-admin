@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <zoom-card class="cat-login-card">
+    <zoom-card border="true" class="cat-login-card">
       <zoom-header>
         管理员登录
       </zoom-header>

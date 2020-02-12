@@ -9,13 +9,13 @@
       <el-button type="danger" plain size="mini">修改</el-button>
     </el-card> -->
 
-    <zoom-card>
+    <zoom-card hover-shadow="true">
       <div
         class="cat-table"
         :style="{background:getTableColor(data.status)}"
       >{{data.tid}}号桌：{{data.status | tableStatus}}</div>
-      <zoom-button type="success" plain size="mini" @click="showTableDetail">详情</zoom-button>
-      <zoom-button type="danger" plain size="mini">修改</zoom-button>
+      <zoom-button type="success" shape="plain" size="mini" @click="showTableDetail">详情</zoom-button>
+      <zoom-button type="danger" shape="plain" size="mini">修改</zoom-button>
     </zoom-card>
 
     <!-- 桌台详情对话框 -->
@@ -24,7 +24,7 @@
       :visible="dialogTableDetailVisible"
       :before-close="closeDialogTableDetail"
     > -->
-    <zoom-dialog-box :op="dialogOp" :show="dialogTableDetailVisible" @close="closeDialogTableDetail">
+    <zoom-dialog-box :op="dialogOp" :title=" data.tid + '号桌台详情' " :show="dialogTableDetailVisible" @close="closeDialogTableDetail">
       <h3>状态：{{data.status | tableStatus}}</h3>
       <img :src="qrcodeData">
       <!-- 对话主体 -->
