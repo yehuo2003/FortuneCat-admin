@@ -5,12 +5,12 @@
         管理员登录
       </zoom-header>
       <zoom-container>
-        <zoom-form submit.prevent="false" label-width="100">
-          <zoom-form-item label="管理员名">
-            <zoom-input placeholder="请输入管理员名" v-model="formData.aname"></zoom-input>
+        <zoom-form ref="form" submit.prevent="false" label-width="100">
+          <zoom-form-item :require="true" label="管理员名">
+            <zoom-input placeholder="请输入管理员名" v-model="formData.aname" slot="content"></zoom-input>
           </zoom-form-item>
-          <zoom-form-item label="登录密码">
-            <zoom-input :op="apwdOp" placeholder="请输入管理员密码" type="password" v-model="formData.apwd"></zoom-input>
+          <zoom-form-item :require="true" label="登录密码">
+            <zoom-input :op="apwdOp" placeholder="请输入管理员密码" v-model="formData.apwd" slot="content"></zoom-input>
           </zoom-form-item>
         </zoom-form>
         <zoom-footer>
@@ -40,8 +40,8 @@ export default {
   },
   methods: {
     doLogin() {
-      if (!this.formData.aname || !this.formData.apwd) {
-        this.$zoom.alert({
+      if (!this.$refs['form'].valid()) {
+          this.$zoom.alert({
           title: '警告',
           content: '用户名或密码不能为空!',
           type: 'warning'
@@ -76,8 +76,7 @@ export default {
     },
     doCancel() {
       //清除用户登录
-      this.formData.aname = "";
-      this.formData.apwd = "";
+      this.$refs['form'].reset();
     }
   }
 };

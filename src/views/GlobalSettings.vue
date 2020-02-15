@@ -1,11 +1,40 @@
 <template>
   <div class="settings">
-    <el-breadcrumb separator="/">
+    <zoom-breadcrumb :op="breadcrumbOp"></zoom-breadcrumb>
+    <!-- <el-breadcrumb separator="/">
       <el-breadcrumb-item to="/main">首页</el-breadcrumb-item>
       <el-breadcrumb-item>全局设置</el-breadcrumb-item>
-    </el-breadcrumb>
+    </el-breadcrumb> -->
     <br>
-    <el-card shadow="never">
+    <zoom-card :border="true">
+      <zoom-form label-width="120px">
+        <zoom-form-item label="应用名称：">
+          <zoom-input v-model="formData.appName" slot="content"></zoom-input>
+        </zoom-form-item>
+        <zoom-form-item label="应用API网址：">
+          <zoom-input v-model="formData.apiUrl" slot="content"></zoom-input>
+        </zoom-form-item>
+        <zoom-form-item label="后台管理网址：">
+          <zoom-input v-model="formData.adminUrl" slot="content"></zoom-input>
+        </zoom-form-item>
+        <zoom-form-item label="客户App网址：">
+          <zoom-input v-model="formData.appUrl" slot="content"></zoom-input>
+        </zoom-form-item>
+        <zoom-form-item label="ICP备案号：">
+          <zoom-input v-model="formData.icp" slot="content"></zoom-input>
+        </zoom-form-item>
+        <zoom-form-item label="版权声明：" slot="content">
+          <zoom-input v-model="formData.copyright"></zoom-input>
+        </zoom-form-item>
+        <zoom-form-item>
+          <div class="form-button" slot="content">
+            <zoom-button size="medium" type="primary" @click="doSubmit">保存修改</zoom-button>
+            <zoom-button size="medium" @click="doCancel">取消修改</zoom-button>
+          </div>
+        </zoom-form-item>
+      </zoom-form>
+    </zoom-card>
+    <!-- <el-card shadow="never">
       <el-form label-width="110px">
         <el-form-item label="应用名称：">
           <el-input v-model="formData.appName"></el-input>
@@ -30,7 +59,7 @@
           <el-button @click="doCancel">取消修改</el-button>
         </el-form-item>
       </el-form>
-    </el-card>
+    </el-card> -->
   </div>
 </template>
 
@@ -38,6 +67,12 @@
 export default {
   data() {
     return {
+      breadcrumbOp: {
+        data: [
+          {id: 1, url: '#/main', title: '首页'},
+          {id: 2, title: '全局设置'}
+        ]
+      },
       formData: {
         appName: "",
         apiUrl: "",
@@ -50,39 +85,57 @@ export default {
   },
   methods: {
     doCancel() {
-      // 将$store存储中的全局配置数据赋值给变量formdata,方便表单元素执行双向数据绑定
-      // 引用复制，两个变量指向同一个对象
-      // this.formData = this.$store.state.globalSettings;
-      // 对象复制,创建出两个一样的对象
-      let fd = this.formData;
-      let st = this.$store.state.globalSettings;
-      fd.appName = st.appName;
-      fd.apiUrl = st.apiUrl;
-      fd.adminUrl = st.adminUrl;
-      fd.appUrl = st.appUrl;
-      fd.icp = st.icp;
-      fd.copyright = st.copyright;
+      /**
+       *  将$store存储中的全局配置数据赋值给变量formdata,方便表单元素执行双向数据绑定
+       *  引用复制，两个变量指向同一个对象
+       *  this.formData = this.$store.state.globalSettings;
+       *  对象复制,创建出两个一样的对象
+       */
+      this.formData = this.$zoom.clone(this.$store.state.globalSettings)
     },
     doSubmit() {
-      var url = this.$store.state.globalSettings.apiUrl + "/admin/settings";
+      let url = this.$store.state.globalSettings.apiUrl + "/admin/settings";
       this.$axios
         .put(url, this.formData)
         .then(res => {
           if (res.data.code == 200) {
-            this.$message.success("全局设置修改成功！");
+            this.$zoom.alert({
+              title: '提示',
+              content: '全局设置修改成功！',
+              type: 'success'
+            })
             // TODO：修改$store中的全局设置
           } else {
-            this.$message.error("全局设置修改失败！");
+            this.$zoom.alert({
+              title: '提示',
+              content: '全局设置修改失败！',
+              type: 'error'
+            })
           }
         })
         .catch(err => {
-          console.log(err);
+          console.warn(err);
         });
     }
   },
-  mounted() {
+  created() {
     this.doCancel();
   }
 };
 </script>
-
+<style lang="scss">
+.settings {
+  .zoom-card {
+    padding: 20px;
+    .zoom-input {
+      width: 80%;
+    }
+    .form-button {
+      text-align: center;
+      .zoom-btn {
+        margin: 0 10px;
+      }
+    }
+  }
+}
+</style>

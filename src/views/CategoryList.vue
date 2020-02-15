@@ -1,13 +1,16 @@
 <template>
   <div class="cat-category-list">
-    <el-breadcrumb>
+    <zoom-breadcrumb :op="breadcrumbOp"></zoom-breadcrumb>
+    <!-- <el-breadcrumb>
       <el-breadcrumb-item>菜品类别管理</el-breadcrumb-item>
       <el-breadcrumb-item>类别列表</el-breadcrumb-item>
-    </el-breadcrumb>
+    </el-breadcrumb> -->
     <br>
-    <el-button @click="addCategory" type="primary">添加新的菜品类别</el-button>
-    <br>
-    <el-table :data="categoryList" stripe border>
+    <!-- <el-button @click="addCategory" type="primary">添加新的菜品类别</el-button> -->
+    <zoom-button @click="addCategory" type="primary" size="large">添加新的菜品类别</zoom-button>
+    <hr>
+    <zoom-grid ref="grid" :op="gridOp"></zoom-grid>
+    <!-- <el-table :data="categoryList" stripe border>
       <el-table-column prop="cid" label="编号"></el-table-column>
       <el-table-column prop="cname" label="名称"></el-table-column>
       <el-table-column label="操作">
@@ -16,7 +19,7 @@
           <el-button @click="deleteCategory(row,$index)" type="danger" size="mini">删除</el-button>
         </template>
       </el-table-column>
-    </el-table>
+    </el-table> -->
   </div>
 </template>
 
@@ -24,6 +27,49 @@
 export default {
   data() {
     return {
+      breadcrumbOp: {
+        data: [
+          {id: 1, title: '菜品类别管理'},
+          {id: 2, title: '全类别列表'}
+        ]
+      },
+      gridOp: {
+        title: [
+          {
+            fieId: 'index',
+            header: '编号'
+          },
+          {
+            fieId: 'btns',
+            header: '操作',
+            btns: [
+              {
+                title: '修改',
+                css: {
+                  icon: 'icon-edit'
+                },
+                onClick: val => {
+                  this.updateCategory(val);
+                }
+              },
+              {
+                title: '关闭',
+                css: {
+                  icon: 'icon-close'
+                },
+                onClick: val => {
+                  this.deleteCategory(val);
+                }
+              }
+            ]
+          },
+          {
+            fieId: 'cname',
+            header: '菜品名称'
+          }
+        ],
+        data: []
+      },
       categoryList: []
     };
   },
@@ -48,11 +94,11 @@ export default {
               }
             })
             .catch(err => {
-              console.log(err);
+              console.warn(err);
             });
         })
         .catch(err => {
-          console.log(err);
+          console.warn(err);
         });
     },
     updateCategory(c, i) {
@@ -61,7 +107,7 @@ export default {
       })
         .then(({ value }) => {})
         .catch(err => {
-          console.log(err);
+          console.warn(err);
         });
     },
     deleteCategory(c, i) {
@@ -83,23 +129,26 @@ export default {
               }
             })
             .catch(err => {
-              console.log(err);
+              console.warn(err);
             });
         })
-        .catch(() => {
-          console.log(err);
+        .catch(err => {
+          console.warn(err);
         });
     }
   },
   mounted() {
-    var url = this.$store.state.globalSettings.apiUrl + "/admin/category";
+    this.$refs['grid'].showLoad(true);
+    let url = this.$store.state.globalSettings.apiUrl + "/admin/category";
     this.$axios
       .get(url)
-      .then(res => {
-        this.categoryList = res.data;
+      .then(({data}) => {
+        // this.categoryList = res.data;
+        this.$refs['grid'].load(data);
+        this.$refs['grid'].showLoad(false);
       })
       .catch(err => {
-        console.log(err);
+        console.warn(err);
       });
   }
 };
