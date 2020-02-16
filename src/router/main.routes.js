@@ -14,7 +14,6 @@ export default {
     { path: '/category/update', component: () => import('../views/CategoryUpdate.vue') },
     { path: '/dish/list', component: () => import('../views/DishList.vue') },
     { path: '/dish/add', component: () => import('../views/DishAdd.vue') },
-    { path: '/dish/delete', component: () => import('../views/DishDelete.vue') },
     { path: '/dish/update', component: () => import('../views/DishUpdate.vue') },
     { path: '/order/list', component: () => import('../views/OrderList.vue') },
     { path: '/security', component: () => import('../views/Security.vue') },

@@ -1,7 +1,7 @@
 <template>
   <zoom-container>
-    <zoom-tree-menu style="float: left;" :op="navOp"></zoom-tree-menu>
-    <main style="width: 80%; float: right; font-size: 16px;">
+    <zoom-tree-menu style="float: left; font-size: 14px;" :op="navOp"></zoom-tree-menu>
+    <main style="width: 80%; float: right;">
         <!-- 顶部信息栏 -->
       <MainHeader></MainHeader>
       <!-- 主体部分 -->
@@ -29,8 +29,7 @@ export default {
           {title: '全局设置', url: '#/settings'},
           {title: '桌台管理', url: '', children: [
             {title: '桌台列表', url: '#/table/list'},
-            {title: '添加桌台', url: '#/table/add'},
-            {title: '删除桌台', url: '#/table/delete'}
+            {title: '添加桌台', url: '#/table/add'}
           ]},
           {title: '菜品类别', url: '#/category/list'},
           {title: '菜品管理', url: '', children: [

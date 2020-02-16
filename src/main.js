@@ -11,6 +11,17 @@ Vue.use(zoomUI);
 
 import '../node_modules/zoom-ui-1.0/lib/zoom-ui-1.0.css'
 
+
+// 懒加载图片
+import Lazyload from './lazyLoad.js'
+// Vue.use(LazyLoad);
+// 参数均为可选
+Vue.use(Lazyload,{
+  scrollDistance: 15, // 距离可视区还有15px时开发加载资源
+  // defaultImage: 'https://gw.alicdn.com/tps/i1/TB147JCLFXXXXc1XVXXxGsw1VXX-112-168.png', // 资源图片未加载前的默认图片（绝对路径）
+  // errorImage:'https://gw.alicdn.com/tps/i1/TB147JCLFXXXXc1XVXXxGsw1VXX-112-168.png' // 资源图片加载失败时要加载的资源（绝对路径）
+ })
+
 // 插件和全局对象的设置
 Vue.use(ElementUI) //注册ElementUI插件
 Vue.prototype.$axios = axios //把axios设置为所有Vue组件实例的成员属性，以后可以使用this.$axios使用异步请求功能

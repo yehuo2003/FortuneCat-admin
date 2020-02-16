@@ -10,6 +10,11 @@
     <zoom-button @click="addCategory" type="primary" size="large">添加新的菜品类别</zoom-button>
     <hr>
     <zoom-grid ref="grid" :op="gridOp"></zoom-grid>
+    <zoom-dialog-box :title="title" :show="visibility" :op="dialogOp" width="500px" @close="close">
+      <h4>{{content}}</h4>
+      <br>
+      <zoom-input ref="cname" v-model="cname"></zoom-input>
+    </zoom-dialog-box>
     <!-- <el-table :data="categoryList" stripe border>
       <el-table-column prop="cid" label="编号"></el-table-column>
       <el-table-column prop="cname" label="名称"></el-table-column>
@@ -33,10 +38,34 @@ export default {
           {id: 2, title: '全类别列表'}
         ]
       },
+      cid: '',
+      cname: '',
+      title: '新增',
+      content: '请输入新的菜品类别名：',
+      visibility: false,
+      dialogOp: {
+        showBtn: true,
+        onClick: () => {
+          if (!this.cname) {
+            this.$zoom.alert({
+              title: '提示',
+              content: '菜品类别名不能为空!',
+              type: 'warning'
+            })
+            return;
+          }
+          // 根据title判断是新增还是修改
+          if (this.title === '新增') {
+            this.addCategory(this.title);
+          } else {
+            this.updateCategory(this.cid, this.title);
+          }
+        }
+      },
       gridOp: {
         title: [
           {
-            fieId: 'index',
+            fieId: 'cid',
             header: '编号'
           },
           {
@@ -70,89 +99,134 @@ export default {
         ],
         data: []
       },
-      categoryList: []
     };
   },
   methods: {
-    addCategory() {
-      this.$prompt("请输入新的菜品类别名：", "提示", { type: "info" })
-        .then(({ value }) => {
-          debugger;
-          // 获得用户的输入，调用数据API添加到数据库
-          var url = this.$store.state.globalSettings.apiUrl + "/admin/category";
-          this.$axios
-            .post(url, { cname: value })
-            .then(res => {
-              debugger;
-              if (res.data.code == 200) {
-                // 数据库中添加成功
-                this.$message.success("新的类别添加成功!");
-                // 模型数据中添加新的类别
-                this.categoryList.push({ cid: res.data.cid, cname: value });
-              } else {
-                this.$message.error("新的类别添加出错：" + res.data.msg);
-              }
+    // 关闭弹框组件
+    close() {
+      this.visibility = false;
+      this.cname = this.cid = '';
+      this.$refs['cname'].reset();
+    },
+    addCategory(value) {
+      if (value) {
+        let url = this.$store.state.globalSettings.apiUrl + "/admin/category";
+        this.$axios.post(url, { cname: this.cname }).then(({data}) => {
+          if (data.code === 200) {
+            // 数据库添加成功
+            this.$zoom.alert({
+              title: '提示',
+              content: '新的类别添加成功!',
+              type: 'success'
             })
-            .catch(err => {
-              console.warn(err);
+            this.close();
+            this.loadData();
+          } else {
+            this.$zoom.alert({
+              title: '提示',
+              content: '新的类别添加出错：' + data.msg,
+              type: 'error'
+            })
+          }
+        })
+      } else {
+        this.title = '新增';
+        this.content = '请输入新的菜品类别名：';
+        this.visibility = true;
+      }
+    },
+    updateCategory(c, value) {
+      if (value) {
+        let url = this.$store.state.globalSettings.apiUrl + "/admin/category";
+        this.$axios
+        .put(url, {cid: c.cid, cname: this.cname})
+        .then(({data}) => {
+          if (data.code === 200) {
+            this.$zoom.alert({
+              title: '提示',
+              content: '修改类别成功!',
+              type: 'success'
             });
+            this.close();
+            this.loadData();
+          } else {
+            this.$zoom.alert({
+              title: '提示',
+              content: '修改类别时出错：' + data.msg,
+              type: 'error'
+            });
+          }
         })
         .catch(err => {
           console.warn(err);
-        });
-    },
-    updateCategory(c, i) {
-      this.$prompt("请输入您想修改的类别名：", "提示", {
-        inputValue: c.cname
-      })
-        .then(({ value }) => {})
-        .catch(err => {
-          console.warn(err);
-        });
-    },
-    deleteCategory(c, i) {
-      this.$confirm("删除操作不可撤销！您确定吗？", "提示", { type: "warning" })
-        .then(() => {
-          var url =
-            this.$store.state.globalSettings.apiUrl +
-            "/admin/category/" +
-            c.cid;
-          this.$axios
-            .delete(url)
-            .then(res => {
-              if (res.data.code == 200) {
-                // 数据库中已经删除成功
-                this.categoryList.splice(i, 1); //模型数据中删除
-                this.$message.success("菜品类别删除成功");
-              } else {
-                this.$message.error("类别删除出错" + res.data.msg);
-              }
-            })
-            .catch(err => {
-              console.warn(err);
-            });
         })
-        .catch(err => {
-          console.warn(err);
-        });
-    }
-  },
-  mounted() {
-    this.$refs['grid'].showLoad(true);
-    let url = this.$store.state.globalSettings.apiUrl + "/admin/category";
-    this.$axios
+      } else {
+        this.title = '修改';
+        this.content = '请输入您想修改的类别名：';
+        this.$refs['cname'].currentValue = this.cname = c.cname;
+        this.visibility = true;
+        this.cid = c;
+      }
+    },
+    loadData() {
+      this.$refs['grid'].showLoad(true);
+      let url = this.$store.state.globalSettings.apiUrl + "/admin/category";
+      this.$axios
       .get(url)
       .then(({data}) => {
-        // this.categoryList = res.data;
         this.$refs['grid'].load(data);
         this.$refs['grid'].showLoad(false);
       })
       .catch(err => {
         console.warn(err);
       });
+    },
+    deleteCategory(c) {
+      this.$zoom.popup({
+        title: '提示',
+        content: `您确认要删除${c.cname}吗？`,
+        type: 'warning',
+        onClick: () => {
+          let url =
+            this.$store.state.globalSettings.apiUrl +
+            "/admin/category/" +
+            c.cid;
+          this.$axios
+          .delete(url)
+          .then(({data}) => {
+            if (data.code == 200) {
+              // 数据库中已经删除成功
+              this.$zoom.alert({
+                title: '提示',
+                content: '菜品类别删除成功!',
+                type: 'success'
+              });
+              this.loadData();
+            } else {
+              this.$zoom.alert({
+                title: '提示',
+                content: '类别删除出错!',
+                type: 'error'
+              });
+            }
+          })
+          .catch(err => {
+            console.warn(err);
+          });
+        }
+      })
+    }
+  },
+  mounted() {
+    this.loadData();
   }
 };
 </script>
 
 <style lang="scss">
+.cat-category-list {
+  td[fieid="cid"] {
+    display: none;
+  }
+}
 </style>

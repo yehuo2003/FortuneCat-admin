@@ -49,11 +49,11 @@ export default {
         return
       }
       //执行登录
-      var url =
+      let url =
         this.$store.state.globalSettings.apiUrl +
-        `/admin/login/${this.formData.aname}/${this.formData.apwd}`;
+        `/admin`;
       this.$axios
-        .get(url)
+        .post(url, this.formData)
         .then(res => {
           if (res.data.code == 200) {
             // 登录成功

@@ -3,7 +3,7 @@
     <zoom-breadcrumb :op="breadcrumbOp"></zoom-breadcrumb>
     <zoom-row>
       <zoom-col v-for="(t,i) of tableList" :key="i" xs="12" sm="8" md="6" lg="3" xl="2">
-        <cat-table :data="t"></cat-table>
+        <cat-table :data="t" @update="load"></cat-table>
       </zoom-col>
     </zoom-row>
   </div>
@@ -27,9 +27,13 @@ export default {
     };
   },
   mounted() {
-    // 加载桌台列表
-    var url = this.$store.state.globalSettings.apiUrl + "/admin/table";
-    this.$axios
+    this.load();
+  },
+  methods: {
+    load() {
+      // 加载桌台列表
+      let url = this.$store.state.globalSettings.apiUrl + "/admin/table";
+      this.$axios
       .get(url)
       .then(({ data }) => {
         this.tableList = data;
@@ -37,6 +41,7 @@ export default {
       .catch(err => {
         console.warn(err);
       });
-  },
+    }
+  }
 };
 </script>
