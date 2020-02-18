@@ -26,7 +26,7 @@ export default {
       tableList: []
     };
   },
-  mounted() {
+  created() {
     this.load();
   },
   methods: {

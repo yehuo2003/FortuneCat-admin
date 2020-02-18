@@ -35,8 +35,7 @@ export default {
           {title: '菜品管理', url: '', children: [
             {title: '所有菜品', url: '#/dish/list'},
             {title: '添加菜品', url: '#/dish/add'},
-            {title: '修改菜品', url: '#/dish/update'},
-            {title: '删除菜品', url: '#/dish/delete'}
+            {title: '修改菜品', url: '#/dish/update'}
           ]},
           {title: '订单管理', url: '#/order/list'},
           {title: '安全管理', url: '#/security'},

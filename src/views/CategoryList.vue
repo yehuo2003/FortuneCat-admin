@@ -94,7 +94,7 @@ export default {
           },
           {
             fieId: 'cname',
-            header: '菜品名称'
+            header: '菜品类别名称'
           }
         ],
         data: []
@@ -174,7 +174,9 @@ export default {
       this.$axios
       .get(url)
       .then(({data}) => {
-        this.$refs['grid'].load(data);
+        if (data) {
+          this.$refs['grid'].load(data);
+        }
         this.$refs['grid'].showLoad(false);
       })
       .catch(err => {
