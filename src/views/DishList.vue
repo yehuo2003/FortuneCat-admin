@@ -14,7 +14,7 @@
             菜品名称　<zoom-input v-model.trim="dishName"></zoom-input>
           </zoom-col>
           <zoom-col span="2">
-            <zoom-button @click="load">搜索</zoom-button>
+            <zoom-button @click="load" type="primary">搜索</zoom-button>
           </zoom-col>
         </zoom-row>
         <zoom-grid ref="grid" :op="gridOp"></zoom-grid>
@@ -25,7 +25,7 @@
           菜品详情
           <i @click.stop="close" class="zoom-icon icon-close-plus"></i>
         </h5>
-        <dish-detail :did="did"></dish-detail>
+        <dish-detail :list="categoryObj" @close="close"></dish-detail>
       </zoom-tab-item>
     </zoom-tabs>
   </div>
@@ -38,7 +38,7 @@ export default {
   },
   data() {
     return {
-      did: '',  //  菜品id
+      categoryObj: {},  //  菜品id
       showDetail: false,  //  展示详情页
       category: '', //  菜品类别
       dishName: '', //  菜品名称
@@ -78,23 +78,53 @@ export default {
             header: '操作',
             btns: [
               {
-                title: '详情',
+                title: '详情/编辑',
                 css: {
-                  icon: 'icon-edit'
+                  icon: 'icon-order'
                 },
                 onClick: val => {
-                  console.log(val);
-                  this.did = val.did;
-                  this.curTab = 1;
-                  this.showDetail = true;
+                  let url = `${this.$store.state.globalSettings.apiUrl}/admin/dish/${val.did}`;
+                  this.$axios
+                  .get(url)
+                  .then(({data}) => {
+                    this.categoryObj = data;
+                    this.curTab = 1;
+                    this.showDetail = true;
+                  }).catch(err => console.warn(err));
                 }
               },
               {
-                title: '关闭',
+                title: '删除',
                 css: {
-                  icon: 'icon-close'
+                  icon: 'icon-ash-bin'
                 },
                 onClick: val => {
+                  this.$zoom.popup({
+                    title: '提示',
+                    content: `确定要删除菜品${val.title}吗?`,
+                    type: 'primary',
+                    onClick: () => {
+                      let url = `${this.$store.state.globalSettings.apiUrl}/admin/dish/${val.did}`;
+                      this.$axios
+                      .delete(url)
+                      .then(({data}) => {
+                        if (data.code === 200) {
+                          this.$zoom.alert({
+                            title: '提示',
+                            content: `菜品${val.title}删除成功!`,
+                            type: 'success'
+                          })
+                          this.load();
+                        } else {
+                          this.$zoom.alert({
+                            title: '提示',
+                            content: `菜品${val.title}删除失败! ${data.msg}`,
+                            type: 'error'
+                          })
+                        }
+                      }).catch(err => console.warn(err));
+                    }
+                  })
                   // this.deleteCategory(val);
                 }
               }
@@ -149,16 +179,18 @@ export default {
     /**
      * 关闭详情页, 加载菜品
      */
-    close() {
+    close(val) {
       this.curTab = 0;
       this.showDetail = false;
       this.tabChange(0);
+      if (val) {
+        this.$nextTick(() => {
+          this.load();
+        })
+      }
     },
     tabChange(index) {
       this.curTab = index;
-      this.$nextTick(() => {
-        this.load();
-      })
     },
     load() {
       this.$refs['grid'].showLoad(true);

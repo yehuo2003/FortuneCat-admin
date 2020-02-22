@@ -8,7 +8,7 @@
   </div>
 </template>
 <script>
-import TableForm from './TableForm';
+import TableForm from '../components/TableForm';
 export default {
   components: {
     TableForm

@@ -31,7 +31,7 @@
           <h3>桌名：{{data.tname}}</h3>
           <h3>状态：{{data.status | tableStatus}}</h3>
           <!-- <img :src="qrcodeData"> -->
-          <img v-lazyload="qrcodeData">
+          <img :src="qrcodeData">
         </zoom-tab-item>
         <zoom-tab-item :index="1" :label="'修改'">
           <table-form :tableData="data" @update="updateMsg" @close="closeDialogTableDetail"></table-form>
@@ -52,7 +52,7 @@
   </div>
 </template>
 <script>
-import TableForm from '../views/TableForm';
+import TableForm from './TableForm';
 export default {
   components: {
     TableForm

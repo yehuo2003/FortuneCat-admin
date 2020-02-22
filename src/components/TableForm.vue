@@ -1,16 +1,16 @@
 <template>
   <zoom-form ref="form" class="cat-table-form" label-width="80px">
     <zoom-form-item :require="true" label="桌名：">
-      <zoom-input v-model="formData.tname" slot="content"></zoom-input>
+      <zoom-input v-model="formData.tname"></zoom-input>
     </zoom-form-item>
     <zoom-form-item :require="true" label="类型：">
-      <zoom-dropdown ref="dropdown" v-model="formData.type" :op="dropdownOp" slot="content"></zoom-dropdown>
+      <zoom-dropdown ref="dropdown" v-model="formData.type" :op="dropdownOp"></zoom-dropdown>
     </zoom-form-item>
     <zoom-form-item :require="true" label="状态：">
-      <zoom-radio ref="radio" v-model="formData.status" :op="radioOp" slot="content"></zoom-radio>
+      <zoom-radio ref="radio" v-model="formData.status" :op="radioOp"></zoom-radio>
     </zoom-form-item>
     <zoom-form-item>
-      <div class="form-button" slot="content">
+      <div class="form-button">
         <span v-if="isAdd" class="form-table-add">
           <zoom-button @click="add" type="primary">添加</zoom-button>
           <zoom-button @click="quit">重置</zoom-button>

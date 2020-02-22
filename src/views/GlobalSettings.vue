@@ -9,25 +9,25 @@
     <zoom-card :border="true">
       <zoom-form label-width="120px">
         <zoom-form-item label="应用名称：">
-          <zoom-input v-model="formData.appName" slot="content"></zoom-input>
+          <zoom-input v-model="formData.appName"></zoom-input>
         </zoom-form-item>
         <zoom-form-item label="应用API网址：">
-          <zoom-input v-model="formData.apiUrl" slot="content"></zoom-input>
+          <zoom-input v-model="formData.apiUrl"></zoom-input>
         </zoom-form-item>
         <zoom-form-item label="后台管理网址：">
-          <zoom-input v-model="formData.adminUrl" slot="content"></zoom-input>
+          <zoom-input v-model="formData.adminUrl"></zoom-input>
         </zoom-form-item>
         <zoom-form-item label="客户App网址：">
-          <zoom-input v-model="formData.appUrl" slot="content"></zoom-input>
+          <zoom-input v-model="formData.appUrl"></zoom-input>
         </zoom-form-item>
         <zoom-form-item label="ICP备案号：">
-          <zoom-input v-model="formData.icp" slot="content"></zoom-input>
+          <zoom-input v-model="formData.icp"></zoom-input>
         </zoom-form-item>
-        <zoom-form-item label="版权声明：" slot="content">
+        <zoom-form-item label="版权声明：">
           <zoom-input v-model="formData.copyright"></zoom-input>
         </zoom-form-item>
         <zoom-form-item>
-          <div class="form-button" slot="content">
+          <div class="form-button">
             <zoom-button size="medium" type="primary" @click="doSubmit">保存修改</zoom-button>
             <zoom-button size="medium" @click="doCancel">取消修改</zoom-button>
           </div>

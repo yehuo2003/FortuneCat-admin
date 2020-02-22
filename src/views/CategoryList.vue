@@ -75,16 +75,16 @@ export default {
               {
                 title: '修改',
                 css: {
-                  icon: 'icon-edit'
+                  icon: 'icon-modification'
                 },
                 onClick: val => {
                   this.updateCategory(val);
                 }
               },
               {
-                title: '关闭',
+                title: '删除',
                 css: {
-                  icon: 'icon-close'
+                  icon: 'icon-ash-bin'
                 },
                 onClick: val => {
                   this.deleteCategory(val);

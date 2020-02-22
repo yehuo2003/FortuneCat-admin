@@ -26,19 +26,18 @@ export default {
         width: '18%',
         accordion: true,
         data: [
-          {title: '全局设置', url: '#/settings'},
+          {title: '全局设置', url: '#/settings', icon: 'icon-set'},
           {title: '桌台管理', url: '', children: [
-            {title: '桌台列表', url: '#/table/list'},
-            {title: '添加桌台', url: '#/table/add'}
+            {title: '桌台列表', url: '#/table/list', icon: 'icon-list'},
+            {title: '添加桌台', url: '#/table/add', icon: 'icon-add-plus'}
           ]},
           {title: '菜品类别', url: '#/category/list'},
           {title: '菜品管理', url: '', children: [
-            {title: '所有菜品', url: '#/dish/list'},
-            {title: '添加菜品', url: '#/dish/add'},
-            {title: '修改菜品', url: '#/dish/update'}
+            {title: '所有菜品', url: '#/dish/list', icon: 'icon-list'},
+            {title: '添加菜品', url: '#/dish/add', icon: 'icon-add-plus'}
           ]},
-          {title: '订单管理', url: '#/order/list'},
-          {title: '安全管理', url: '#/security'},
+          {title: '订单管理', url: '#/order/list', icon: 'icon-order'},
+          {title: '安全管理', url: '#/security', icon: 'icon-store'},
         ]
       }
     };
@@ -60,13 +59,13 @@ export default {
   //     }
   //   }
   // },
-  beforeCreate() {
-    // 组件创建之前先要检查是否已经登录为管理员
-    if (!this.$store.state.adminName) {
-      // 未登录则跳转到登录页面
-      this.$router.push("/login");
-    }
-  }
+  // beforeCreate() {
+  //   // 组件创建之前先要检查是否已经登录为管理员
+  //   if (!this.$store.state.adminName) {
+  //     // 未登录则跳转到登录页面
+  //     this.$router.push("/login");
+  //   }
+  // }
 };
 </script>
 

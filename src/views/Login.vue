@@ -7,10 +7,10 @@
       <zoom-container>
         <zoom-form ref="form" submit.prevent="false" label-width="100">
           <zoom-form-item :require="true" label="管理员名">
-            <zoom-input placeholder="请输入管理员名" v-model="formData.aname" slot="content"></zoom-input>
+            <zoom-input placeholder="请输入管理员名" v-model="formData.aname"></zoom-input>
           </zoom-form-item>
           <zoom-form-item :require="true" label="登录密码">
-            <zoom-input :op="apwdOp" placeholder="请输入管理员密码" v-model="formData.apwd" slot="content"></zoom-input>
+            <zoom-input :op="apwdOp" placeholder="请输入管理员密码" v-model="formData.apwd"></zoom-input>
           </zoom-form-item>
         </zoom-form>
         <zoom-footer>
@@ -40,14 +40,14 @@ export default {
   },
   methods: {
     doLogin() {
-      if (!this.$refs['form'].valid()) {
-          this.$zoom.alert({
-          title: '警告',
-          content: '用户名或密码不能为空!',
-          type: 'warning'
-        })
-        return
-      }
+      // if (!this.$refs['form'].valid()) {
+      //     this.$zoom.alert({
+      //     title: '警告',
+      //     content: '用户名或密码不能为空!',
+      //     type: 'warning'
+      //   })
+      //   return
+      // }
       //执行登录
       let url =
         this.$store.state.globalSettings.apiUrl +
