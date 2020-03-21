@@ -99,7 +99,9 @@ export default {
               content: params.did + '号菜品修改成功! ',
               type: 'success'
             });
-            this.$emit('close', true);
+            setTimeout(() => {
+              this.$emit('close', true);
+            }, 1000);
         } else {
             this.$zoom.alert({
               title: '提示',

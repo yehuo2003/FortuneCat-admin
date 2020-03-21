@@ -64,10 +64,10 @@ export default {
       },
       gridOp: {
         title: [
-          {
-            fieId: 'cid',
-            header: '编号'
-          },
+          // {
+          //   fieId: 'cid',
+          //   header: '编号'
+          // },
           {
             fieId: 'btns',
             header: '操作',
@@ -227,7 +227,7 @@ export default {
 
 <style lang="scss">
 .cat-category-list {
-  td[fieid="cid"] {
+  th[fieid="cid"] {
     display: none;
   }
 }

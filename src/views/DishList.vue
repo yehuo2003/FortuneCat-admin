@@ -69,10 +69,10 @@ export default {
       },
       gridOp: {
         title: [
-          {
-            fieId: '',
-            header: '编号'
-          },
+          // {
+          //   fieId: '',
+          //   header: '编号'
+          // },
           {
             fieId: 'btns',
             header: '操作',
